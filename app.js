@@ -10,6 +10,8 @@ const bodyParser = require('body-parser').json();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 
+let victor = new Employee('victor', 85000, 'a++');
+
 app.get('/', function (req, res) {
     //endpoint computations
     ///error management
@@ -35,7 +37,11 @@ app.get('/employee/:id/:newSalary', function (req, res) {
 })
 
 app.post('/student', bodyParser, function (req, res){
-    console.log(req.body)
+    victor.updateSalary(req.body.salary)
+    victor.updateName(req.body.name)
+    victor.updateGrade(req.body.grade)
+
+    res.status(200).json({updatedSuccessfully: true, data: {...victor.getEmployeeDetails()}})
 })
 
 app.listen(3000, () => console.log('Example app listening on port 3000!'))
