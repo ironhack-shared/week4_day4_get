@@ -5,7 +5,10 @@ const express = require('express')
 const app = express()
 const hbs = require('hbs')
 const path = require('path')
-const bodyParser = require('body-parser').json();
+const bodyParser = require('body-parser')
+
+app.use(bodyParser.urlencoded({ extended: true }));
+
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
@@ -36,12 +39,27 @@ app.get('/employee/:id/:newSalary', function (req, res) {
     res.status(200).json(output)
 })
 
-app.post('/student', bodyParser, function (req, res){
+app.post('/student', function (req, res){
     victor.updateSalary(req.body.salary)
     victor.updateName(req.body.name)
     victor.updateGrade(req.body.grade)
 
     res.status(200).json({updatedSuccessfully: true, data: {...victor.getEmployeeDetails()}})
+})
+
+app.get('/registro', function(req, res) {
+    res.render('login')
+})
+
+app.post('/juan', function(req, res) {
+    // console.log('xxxxx')
+    // console.log(req.body.email)
+    // console.log(req.body.password)
+    // console.log('xxxxx')
+
+    let viewData = {email: req.body.email, password: req.body.password}
+
+    res.render('success', {viewData})
 })
 
 app.listen(3000, () => console.log('Example app listening on port 3000!'))
