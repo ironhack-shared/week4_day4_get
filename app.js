@@ -5,7 +5,7 @@ const express = require('express')
 const app = express()
 const hbs = require('hbs')
 const path = require('path')
-
+const bodyParser = require('body-parser').json();
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
@@ -21,7 +21,7 @@ app.get('/employee/:id/:newSalary', function (req, res) {
     let allEmployees = [new Employee(60000), new Employee(30000), new Employee(50000), new Employee(60000), new Employee(150000)]
     
     //please, don't forget to review the sent parameters as they could be malicious
-    //consider using something like sanitizing methods
+    //consider using something like sanitizing
     const id = req.params.id
     const newSalary = req.params.newSalary
     const cEmployee = allEmployees[id]
@@ -32,6 +32,10 @@ app.get('/employee/:id/:newSalary', function (req, res) {
 
     ///error management
     res.status(200).json(output)
+})
+
+app.post('/student', bodyParser, function (req, res){
+    console.log(req.body)
 })
 
 app.listen(3000, () => console.log('Example app listening on port 3000!'))
