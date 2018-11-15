@@ -19,6 +19,9 @@ app.get('/', function (req, res) {
 app.get('/employee/:id/:newSalary', function (req, res) {
     console.log(req.params)
     let allEmployees = [new Employee(60000), new Employee(30000), new Employee(50000), new Employee(60000), new Employee(150000)]
+    
+    //please, don't forget to review the sent parameters as they could be malicious
+    //consider using something like sanitizing methods
     const id = req.params.id
     const newSalary = req.params.newSalary
     const cEmployee = allEmployees[id]
