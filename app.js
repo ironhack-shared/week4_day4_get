@@ -8,23 +8,24 @@ const path = require('path')
 const bodyParser = require('body-parser')
 
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(myFakeMiddleware)
+app.use(addsSoniaObjectMiddleware)
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 
 let victor = new Employee('victor', 85000, 'a++');
 
-function myFakeMiddleware(req, _, next) {
+function addsSoniaObjectMiddleware(req, _, next) {
     console.log("myFakeMiddleware was called!");
     req.secretValue = "swordfish";
+    req.sonia = {salary: 4000, name: "sonia"}
     next();
 }
 
 app.get('/', function (req, res) {
     //endpoint computations
     ///error management
-    res.status(200).json({ "employee": "sito", "salary": Math.random() + 40000 })
+    res.status(200).json({ "employee": "sito", "secret" : req.secretValue, "salary": Math.random() + 40000 })
 })
 
 app.get('/employee/:id/:newSalary', function (req, res) {
@@ -49,6 +50,8 @@ app.post('/student', function (req, res) {
     victor.updateSalary(req.body.salary)
     victor.updateName(req.body.name)
     victor.updateGrade(req.body.grade)
+
+    console.log(req.sonia)
 
     res.status(200).json({ updatedSuccessfully: true, data: { ...victor.getEmployeeDetails() } })
 })
